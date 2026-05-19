@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.models.schemas import (
     ChatRequest,
     ChatResponse
@@ -13,6 +15,19 @@ from app.services.memory_service import clear_memory
 
 
 app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+
+    allow_origins=["*"],
+
+    allow_credentials=True,
+
+    allow_methods=["*"],
+
+    allow_headers=["*"],
+)
 
 
 app.include_router(whatsapp_router)
