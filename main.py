@@ -5,12 +5,17 @@ from app.models.schemas import (
     ChatResponse
 )
 
+from app.routes.whatsapp import router as whatsapp_router
+
 from app.services.ai_service import get_ai_response
 
 from app.services.memory_service import clear_memory
 
 
 app = FastAPI()
+
+
+app.include_router(whatsapp_router)
 
 
 @app.get("/")
