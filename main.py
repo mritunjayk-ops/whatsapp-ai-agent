@@ -1,0 +1,42 @@
+from fastapi import FastAPI
+
+from app.models.schemas import (
+    ChatRequest,
+    ChatResponse
+)
+
+from app.services.ai_service import get_ai_response
+
+from app.services.memory_service import clear_memory
+
+
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+
+    return {
+        "message": "WhatsApp AI Agent is running"
+    }
+
+
+@app.post("/chat", response_model=ChatResponse)
+async def chat(request: ChatRequest):
+
+    response = await get_ai_response(request.message)
+
+    return {
+        "user_message": request.message,
+        "ai_response": response
+    }
+
+
+@app.post("/reset-memory")
+async def reset_memory():
+
+    clear_memory()
+
+    return {
+        "message": "Conversation memory cleared successfully"
+    }
